@@ -1,0 +1,41 @@
+time = factor(e1sr$time,levels=c("pre","post"))
+
+aov.e1sr = aov(e1sr$SR ~(e1sr$condition*e1sr$time) + Error(factor(e1sr$subject)/e1sr$time))
+
+summary(aov.e1sr)
+
+eta.2(aov.e1sr, ret.labels=TRUE)
+
+
+leveneTest(e1sr$SR, e1sr$condition, center="mean")
+
+SR = e1sr$SR
+
+condition = e1sr$condition
+
+aov.e1srw = aov(e1sr$SR[condition=="WM"] ~ e1sr$time[condition=="WM"] +Error(factor(e1sr$subject[condition=="WM"])/e1sr$time[condition=="WM"]))
+
+summary(aov.e1srw)
+
+eta.2(aov.e1srw, ret.labels=TRUE)
+
+
+aov.e1srnw = aov(e1sr$SR[condition!="WM"] ~ e1sr$condition[condition!="WM"]*e1sr$time[condition!="WM"] + Error(factor(e1sr$subject[condition!="WM"]) / e1sr$time[condition!="WM"]))
+
+summary(aov.e1srnw)
+
+eta.2(aov.e1srnw, ret.labels=TRUE)
+
+SR = e1sr$SR
+
+condition = e1sr$condition
+
+aov.e1srw = aov(e1sr$SR[condition=="PE"] ~ e1sr$time[condition=="PE"] +Error(factor(e1sr$subject[condition=="PE"])/e1sr$time[condition=="PE"]))
+
+summary(aov.e1srw)
+
+eta.2(aov.e1srw, ret.labels=TRUE)
+
+aov.e1srnw = aov(e1sr$SR[condition!="PE"] ~ e1sr$condition[condition!="PE"]*e1sr$time[condition!="PE"] + Error(factor(e1sr$subject[condition!="PE"]) / e1sr$time[condition!="PE"]))
+
+summary(aov.e1srnw)

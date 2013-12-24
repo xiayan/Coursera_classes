@@ -1,0 +1,165 @@
+JAVA PROFILE 1.0.1, created Sat Apr 27 23:48:17 2013
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+%W% %E%
+
+ Copyright (c) 2006 Sun Microsystems, Inc. All  Rights Reserved.
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=50000153, id = 200001, name="main", group="main")
+THREAD START (obj=50000271, id = 200004, name="Thread-1", group="main")
+THREAD END (id = 200004)
+THREAD END (id = 200001)
+THREAD START (obj=5000027d, id = 200005, name="DestroyJavaVM", group="main")
+THREAD END (id = 200005)
+TRACE 300227:
+	BurrowsWheeler.decode(BurrowsWheeler.java:35)
+	BurrowsWheeler.main(BurrowsWheeler.java:54)
+TRACE 300239:
+	java.io.FileOutputStream.writeBytes(FileOutputStream.java:Unknown line)
+	java.io.FileOutputStream.write(FileOutputStream.java:282)
+	java.io.BufferedOutputStream.write(BufferedOutputStream.java:105)
+	java.io.PrintStream.write(PrintStream.java:430)
+TRACE 300039:
+	sun.security.util.ManifestEntryVerifier.<init>(ManifestEntryVerifier.java:61)
+	java.util.jar.JarFile.initializeVerifier(JarFile.java:320)
+	java.util.jar.JarFile.getInputStream(JarFile.java:395)
+	sun.misc.JarIndex.getJarIndex(JarIndex.java:120)
+TRACE 300201:
+	java.security.Provider.getTypeAndAlgorithm(Provider.java:568)
+	java.security.Provider.parseLegacyPut(Provider.java:581)
+	java.security.Provider.ensureLegacyParsed(Provider.java:537)
+	java.security.Provider.getService(Provider.java:676)
+TRACE 300152:
+	java.security.Signature.<clinit>(Signature.java:146)
+	sun.security.pkcs.SignerInfo.verify(SignerInfo.java:327)
+	sun.security.pkcs.PKCS7.verify(PKCS7.java:494)
+	sun.security.pkcs.PKCS7.verify(PKCS7.java:511)
+TRACE 300080:
+	sun.reflect.ReflectionFactory.newFieldAccessor(ReflectionFactory.java:122)
+	java.lang.reflect.Field.acquireFieldAccessor(Field.java:918)
+	java.lang.reflect.Field.getFieldAccessor(Field.java:899)
+	java.lang.reflect.Field.get(Field.java:358)
+TRACE 300024:
+	java.util.zip.ZipFile.getEntry(ZipFile.java:Unknown line)
+	java.util.zip.ZipFile.getEntry(ZipFile.java:161)
+	java.util.jar.JarFile.getEntry(JarFile.java:209)
+	java.util.jar.JarFile.getJarEntry(JarFile.java:192)
+TRACE 300190:
+	java.math.BigInteger.multiplyToLen(BigInteger.java:1215)
+	java.math.BigInteger.oddModPow(BigInteger.java:1736)
+	java.math.BigInteger.modPow(BigInteger.java:1571)
+	sun.security.provider.DSA.generateV(DSA.java:374)
+TRACE 300191:
+	java.math.BigInteger.addOne(BigInteger.java:1920)
+	java.math.BigInteger.montReduce(BigInteger.java:1853)
+	java.math.BigInteger.oddModPow(BigInteger.java:1822)
+	java.math.BigInteger.modPow(BigInteger.java:1571)
+TRACE 300236:
+	BurrowsWheeler.decode(BurrowsWheeler.java:33)
+	BurrowsWheeler.main(BurrowsWheeler.java:54)
+TRACE 300223:
+	java.io.BufferedInputStream.read(BufferedInputStream.java:236)
+	BinaryStdIn.fillBuffer(BinaryStdIn.java:45)
+	BinaryStdIn.readChar(BinaryStdIn.java:96)
+	BinaryStdIn.readString(BinaryStdIn.java:146)
+TRACE 300238:
+	java.io.BufferedOutputStream.write(BufferedOutputStream.java:77)
+	BinaryStdOut.writeByte(BinaryStdOut.java:59)
+	BinaryStdOut.write(BinaryStdOut.java:197)
+	BurrowsWheeler.decode(BurrowsWheeler.java:45)
+TRACE 300224:
+	BinaryStdIn.readString(BinaryStdIn.java:146)
+	BurrowsWheeler.decode(BurrowsWheeler.java:26)
+	BurrowsWheeler.main(BurrowsWheeler.java:54)
+TRACE 300226:
+	java.util.Arrays.sort1(Arrays.java:752)
+	java.util.Arrays.sort1(Arrays.java:774)
+	java.util.Arrays.sort1(Arrays.java:772)
+	java.util.Arrays.sort1(Arrays.java:774)
+TRACE 300225:
+	java.util.Arrays.sort1(Arrays.java:755)
+	java.util.Arrays.sort1(Arrays.java:772)
+	java.util.Arrays.sort(Arrays.java:174)
+	BurrowsWheeler.decode(BurrowsWheeler.java:29)
+TRACE 300118:
+	sun.util.calendar.Gregorian.newCalendarDate(Gregorian.java:67)
+	sun.util.calendar.Gregorian.newCalendarDate(Gregorian.java:19)
+	sun.security.util.DerInputBuffer.getTime(DerInputBuffer.java:370)
+	sun.security.util.DerInputBuffer.getUTCTime(DerInputBuffer.java:234)
+CPU SAMPLES BEGIN (total = 3504) Sat Apr 27 23:49:00 2013
+rank   self  accum   count trace method
+   1 99.54% 99.54%    3488 300227 BurrowsWheeler.decode
+   2  0.06% 99.60%       2 300239 java.io.FileOutputStream.writeBytes
+   3  0.03% 99.63%       1 300039 sun.security.util.ManifestEntryVerifier.<init>
+   4  0.03% 99.66%       1 300201 java.security.Provider.getTypeAndAlgorithm
+   5  0.03% 99.69%       1 300152 java.security.Signature.<clinit>
+   6  0.03% 99.71%       1 300080 sun.reflect.ReflectionFactory.newFieldAccessor
+   7  0.03% 99.74%       1 300024 java.util.zip.ZipFile.getEntry
+   8  0.03% 99.77%       1 300190 java.math.BigInteger.multiplyToLen
+   9  0.03% 99.80%       1 300191 java.math.BigInteger.addOne
+  10  0.03% 99.83%       1 300236 BurrowsWheeler.decode
+  11  0.03% 99.86%       1 300223 java.io.BufferedInputStream.read
+  12  0.03% 99.89%       1 300238 java.io.BufferedOutputStream.write
+  13  0.03% 99.91%       1 300224 BinaryStdIn.readString
+  14  0.03% 99.94%       1 300226 java.util.Arrays.sort1
+  15  0.03% 99.97%       1 300225 java.util.Arrays.sort1
+  16  0.03% 100.00%       1 300118 sun.util.calendar.Gregorian.newCalendarDate
+CPU SAMPLES END
